@@ -1,4 +1,7 @@
+.idea
+!.gitignore
+
+docker-compose.yml
+
 config
 bak
-.idea
-docker-compose.yml

@@ -1,5 +1,4 @@
 *
 !data
-data/*
 !kibanadata
-kibanadata/*
+!.gitignore
