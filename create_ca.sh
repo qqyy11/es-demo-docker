@@ -17,10 +17,13 @@ get_config()
 # 创建根证书
 create_ca() {
   # 查看是否有证书，没有则创建证书
-  if [ ! -f "${cert_dir}/ca.zip" ] && [ ! -d "${cert_dir}/ca" ]; then
+  if [ ! -f "${cert_dir}/ca.zip" ] ; then
     echo "Creating CA";
     docker run --rm -it -v "${cert_dir}:/usr/share/elasticsearch/config/certs" elasticsearch:"${stack_version}" \
     bin/elasticsearch-certutil ca --silent --pem -out config/certs/ca.zip
+    unzip "${cert_dir}/ca.zip" -d "${cert_dir}";
+  fi;
+  if [ ! -d "${cert_dir}/ca" ] ; then
     unzip "${cert_dir}/ca.zip" -d "${cert_dir}";
   fi;
 }
