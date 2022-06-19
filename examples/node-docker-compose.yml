@@ -16,22 +16,35 @@ services:
         soft: -1
         hard: -1
     environment:
+      # 当前节点名称，集群中每一个节点都需要有不同的名称
       - node.name=es
-      - cluster.name=es-docker-cluster
+      # 集群名称
+      - cluster.name=${CLUSTER_NAME}
+      # 设置可被选举为 master 的节点
       - cluster.initial_master_nodes=es
-      - ES_JAVA_OPTS=-Xms512m -Xmx512m
-      - bootstrap.memory_lock=true
+      # 设置从哪些域名端口发现节点
+#      - discovery.seed_hosts=192.168.0.101:9300
+      # 本机ip，集群之间交互使用，
+      - network.publish_host=127.0.0.1
+      # https 访问时的 elastic 账号的密码
       - ELASTIC_PASSWORD=${ELASTIC_PASSWORD}
+      # 内存限制
+      - ES_JAVA_OPTS=-Xms512m -Xmx512m
+      # 锁定物理内存地址，防止es内存被交换出去
+      - bootstrap.memory_lock=true
+      # 开启加密配置
       - xpack.security.enabled=true
+      # http ssl 相关配置
       - xpack.security.http.ssl.enabled=true
       - xpack.security.http.ssl.key=certs/es/es.key
       - xpack.security.http.ssl.certificate=certs/es/es.crt
       - xpack.security.http.ssl.certificate_authorities=certs/ca/ca.crt
       - xpack.security.http.ssl.verification_mode=certificate
+      # 节点之间交互的 ssl 配置. 其他节点 key 和 certificate 配置的证书，需要由 certificate_authorities 的 ca 证书签发.
       - xpack.security.transport.ssl.enabled=true
+      - xpack.security.transport.ssl.certificate_authorities=certs/ca/ca.crt
       - xpack.security.transport.ssl.key=certs/es/es.key
       - xpack.security.transport.ssl.certificate=certs/es/es.crt
-      - xpack.security.transport.ssl.certificate_authorities=certs/ca/ca.crt
       - xpack.security.transport.ssl.verification_mode=certificate
       - xpack.license.self_generated.type=${LICENSE}
     deploy:

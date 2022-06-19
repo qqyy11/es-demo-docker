@@ -21,7 +21,7 @@ services:
       - network.publish_host=127.0.0.1
       - discovery.seed_hosts=es01,es02
       - cluster.initial_master_nodes=es,es01,es02
-#      - ES_JAVA_OPTS=-Xms512m -Xmx512m
+#      - ES_JAVA_OPTS=-Xms256m -Xmx256m
       - bootstrap.memory_lock=true
       - ELASTIC_PASSWORD=${ELASTIC_PASSWORD}
       - xpack.security.enabled=true
@@ -69,7 +69,7 @@ services:
       - cluster.name=es-docker-cluster
       - discovery.seed_hosts=es,es02
       - cluster.initial_master_nodes=es,es01,es02
-#      - ES_JAVA_OPTS=-Xms512m -Xmx512m
+#      - ES_JAVA_OPTS=-Xms256m -Xmx256m
       - bootstrap.memory_lock=true
       - xpack.security.enabled=true
       - xpack.security.http.ssl.enabled=true
@@ -116,7 +116,7 @@ services:
       - cluster.name=es-docker-cluster
       - discovery.seed_hosts=es,es01
       - cluster.initial_master_nodes=es,es01,es02
-#      - ES_JAVA_OPTS=-Xms512m -Xmx512m
+#      - ES_JAVA_OPTS=-Xms256m -Xmx256m
       - bootstrap.memory_lock=true
       - xpack.security.enabled=true
       - xpack.security.http.ssl.enabled=true
@@ -172,7 +172,7 @@ services:
       test:
         [
           "CMD-SHELL",
-          "curl -s -I http://localhost:5601 | grep -q 'HTTP/1.1 302 Found'",
+          "$(curl -s -I http://localhost:5601 | grep 'HTTP/1.1 302 Found') || $(curl -s -X POST --cacert config/certs/ca/ca.crt -u elastic:${ELASTIC_PASSWORD} -H 'Content-Type: application/json' https://es:9200/_security/user/kibana_system/_password -d '{\"password\":\"${KIBANA_PASSWORD}\"}'|grep -q 'qqqq';)",
         ]
       interval: 10s
       timeout: 10s

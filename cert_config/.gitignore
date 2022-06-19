@@ -1,4 +1,4 @@
 *
 !.gitignore
 !ca.zip
-!instances.yml
+!instances.yml.example
