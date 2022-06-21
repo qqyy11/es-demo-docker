@@ -26,6 +26,8 @@ services:
 #      - discovery.seed_hosts=192.168.0.101:9300
       # 本机ip，集群之间交互使用，
       - network.publish_host=127.0.0.1
+      # 集群内交互点端口
+      - transport.port=9300
       # https 访问时的 elastic 账号的密码
       - ELASTIC_PASSWORD=${ELASTIC_PASSWORD}
       # 内存限制
