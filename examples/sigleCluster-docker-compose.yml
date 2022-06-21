@@ -153,7 +153,6 @@ services:
     volumes:
       - ./certs:/usr/share/kibana/config/certs
       - ./datas/kibanadata:/usr/share/kibana/data
-      - ./plugins:/usr/share/elasticsearch/plugins
     ports:
       - "5601:5601"
     environment:
