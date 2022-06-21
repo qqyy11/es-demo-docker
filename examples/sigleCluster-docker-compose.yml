@@ -157,7 +157,7 @@ services:
       - "5601:5601"
     environment:
       - SERVERNAME=kibana
-      - ELASTICSEARCH_HOSTS=https://es:9200
+      - ELASTICSEARCH_HOSTS=${KIBANA_ES_HOST}
       - ELASTICSEARCH_USERNAME=kibana_system
       - ELASTICSEARCH_PASSWORD="${KIBANA_PASSWORD}"
       - ELASTICSEARCH_SSL_CERTIFICATEAUTHORITIES=config/certs/ca/ca.crt
@@ -171,7 +171,7 @@ services:
       test:
         [
           "CMD-SHELL",
-          "$(curl -s -I http://localhost:5601 | grep -q 'HTTP/1.1 302 Found') || $(curl -s -X POST --cacert config/certs/ca/ca.crt -u elastic:${ELASTIC_PASSWORD} -H 'Content-Type: application/json' https://es:9200/_security/user/kibana_system/_password -d '{\"password\":\"${KIBANA_PASSWORD}\"}'|grep -q 'qqqq';)",
+          "$(curl -s -I http://localhost:5601 | grep -q 'HTTP/1.1 302 Found') || $(curl -s -X POST --cacert config/certs/ca/ca.crt -u elastic:${ELASTIC_PASSWORD} -H 'Content-Type: application/json' ${KIBANA_ES_HOST}/_security/user/kibana_system/_password -d '{\"password\":\"${KIBANA_PASSWORD}\"}'|grep -q 'qqqq';)",
         ]
       interval: 10s
       timeout: 10s

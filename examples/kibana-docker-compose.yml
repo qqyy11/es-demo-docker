@@ -1,0 +1,31 @@
+version: "3.3"
+
+services:
+  kibana:
+    image: docker.elastic.co/kibana/kibana:${STACK_VERSION}
+    volumes:
+      - ./certs:/usr/share/kibana/config/certs
+      - ./datas/kibanadata:/usr/share/kibana/data
+    ports:
+      - "5601:5601"
+    environment:
+      - SERVERNAME=kibana
+      - ELASTICSEARCH_HOSTS=${KIBANA_ES_HOST}
+      - ELASTICSEARCH_USERNAME=kibana_system
+      - ELASTICSEARCH_PASSWORD="${KIBANA_PASSWORD}"
+      - ELASTICSEARCH_SSL_CERTIFICATEAUTHORITIES=config/certs/ca/ca.crt
+    #      - ELASTICSEARCH_SSL_CERTIFICATEAUTHORITIES=config/certs/ca/ca.crt
+    deploy:
+      resources:
+        limits:
+          cpus: '0.50'
+          memory: ${MEM_LIMIT}
+    healthcheck:
+      test:
+        [
+          "CMD-SHELL",
+          "$(curl -s -I http://localhost:5601 | grep -q 'HTTP/1.1 302 Found') || $(curl -s -X POST --cacert config/certs/ca/ca.crt -u elastic:${ELASTIC_PASSWORD} -H 'Content-Type: application/json' ${KIBANA_ES_HOST}/_security/user/kibana_system/_password -d '{\"password\":\"${KIBANA_PASSWORD}\"}'|grep -q 'qqqq';)",
+        ]
+      interval: 10s
+      timeout: 10s
+      retries: 120
