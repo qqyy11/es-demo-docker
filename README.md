@@ -1,4 +1,10 @@
 # elasticsearch-demo
+
+## 依赖
+
+- docker
+- docker compose
+
 ## 生成 certs
 
 1. 在 `.env` 中配置 `STACK_VERSION` （es 版本号）
