@@ -10,11 +10,13 @@ services:
       - "5601:5601"
     environment:
       - SERVERNAME=kibana
+      # es 服务的 url
       - ELASTICSEARCH_HOSTS=${KIBANA_ES_HOST}
+      # kibana 用户账号，密码
       - ELASTICSEARCH_USERNAME=kibana_system
       - ELASTICSEARCH_PASSWORD="${KIBANA_PASSWORD}"
+      # 用来验证的 ca 证书
       - ELASTICSEARCH_SSL_CERTIFICATEAUTHORITIES=config/certs/ca/ca.crt
-    #      - ELASTICSEARCH_SSL_CERTIFICATEAUTHORITIES=config/certs/ca/ca.crt
     deploy:
       resources:
         limits:

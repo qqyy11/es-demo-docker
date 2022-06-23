@@ -17,6 +17,7 @@
 
 - `sigleCluster` 单机 es 集群
 - `node` 单节点 es 服务, 也可作为节点加入集群
+- `kibana` kibana 示例
 
 ## 启动 elastic search
 
